@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Home() {
   const [emp, setEmp] = useState({});
   const [allEmp, setAllEmp] = useState([]);
   const [hobby, setHobby] = useState([]);
-  const [city, setCity] = useState(["Surat", "Baroda", "Ahmedabad", "Mumbai"]);
+  const [city] = useState(["Surat", "Baroda", "Ahmedabad", "Mumbai"]);
 
   useEffect(() => {
     let allRecords = JSON.parse(localStorage.getItem('emp'));
@@ -41,122 +42,90 @@ function Home() {
 
   return (
     <>
-      <h1 style={{ textAlign: "center", color: "#333", fontSize: "28px", marginBottom: "20px" }}>Home Page</h1>
+      <h1 style={{ textAlign: "center", color: "#fff", fontSize: "32px", marginBottom: "20px", textTransform: "uppercase", letterSpacing: "2px" }}>Employee Form</h1>
       <form
-        method="post"
-        onSubmit={(e) => submitForm(e)}
+        onSubmit={submitForm}
         style={{
-          maxWidth: "500px",
+          maxWidth: "450px",
           margin: "0 auto",
-          padding: "20px",
-          borderRadius: "10px",
-          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
-          backgroundColor: "#f9f9f9"
+          padding: "30px",
+          borderRadius: "12px",
+          boxShadow: "0px 5px 15px rgba(255, 255, 255, 0.2)",
+          backgroundColor: "#1e1e1e",
+          fontFamily: "Arial, sans-serif",
+          color: "#fff"
         }}
       >
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <tbody>
-            <tr>
-              <td style={{ padding: "10px", fontWeight: "bold" }}>Enter Name</td>
-              <td>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Enter your Name"
-                  onChange={getInputValue}
-                  value={emp.name || ""}
-                  required
-                  style={{ width: "100%", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td style={{ padding: "10px", fontWeight: "bold" }}>Enter Email</td>
-              <td>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Enter your Email"
-                  onChange={getInputValue}
-                  value={emp.email || ""}
-                  required
-                  style={{ width: "100%", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td style={{ padding: "10px", fontWeight: "bold" }}>Enter Password</td>
-              <td>
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Enter your Password"
-                  onChange={getInputValue}
-                  value={emp.password || ""}
-                  style={{ width: "100%", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td style={{ padding: "10px", fontWeight: "bold" }}>Enter Gender</td>
-              <td>
-                <label style={{ marginRight: "10px" }}>
-                  <input type="radio" name="gender" value="male" onChange={getInputValue} checked={emp.gender === "male"} />
-                  Male
-                </label>
-                <label>
-                  <input type="radio" name="gender" value="female" onChange={getInputValue} checked={emp.gender === "female"} />
-                  Female
-                </label>
-              </td>
-            </tr>
-            <tr>
-              <td style={{ padding: "10px", fontWeight: "bold" }}>Hobby</td>
-              <td>
-                {["Cricket", "Swimming", "Travelling", "Coding"].map((hobbyName) => (
-                  <label key={hobbyName} style={{ marginRight: "10px", display: "block" }}>
-                    <input type="checkbox" name="hobby" value={hobbyName} onChange={getInputValue} checked={hobby.includes(hobbyName)} />
-                    {hobbyName}
-                  </label>
-                ))}
-              </td>
-            </tr>
-            <tr>
-              <td style={{ padding: "10px", fontWeight: "bold" }}>Enter City</td>
-              <td>
-                <select
-                  name="city"
-                  onChange={getInputValue}
-                  style={{ width: "100%", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }}
-                >
-                  <option value="">--- Select City ---</option>
-                  {city.map((v, i) => (
-                    <option key={i} value={v}>{v}</option>
-                  ))}
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td style={{ textAlign: "right", paddingTop: "10px" }}>
-                <button
-                  type="submit"
-                  style={{
-                    backgroundColor: "#007bff",
-                    color: "#fff",
-                    padding: "10px 15px",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    fontSize: "16px"
-                  }}
-                >
-                  Submit
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        {[
+          { label: "Enter Name", type: "text", name: "name" },
+          { label: "Enter Email", type: "email", name: "email" },
+          { label: "Enter Password", type: "password", name: "password" }
+        ].map(({ label, type, name }) => (
+          <div key={name} style={{ marginBottom: "15px" }}>
+            <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>{label}</label>
+            <input
+              type={type}
+              name={name}
+              placeholder={label}
+              onChange={getInputValue}
+              value={emp[name] || ""}
+              required
+              style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid #555", backgroundColor: "#333", color: "#fff" }}
+            />
+          </div>
+        ))}
+
+        <div style={{ marginBottom: "15px" }}>
+          <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>Gender</label>
+          {['male', 'female'].map((gender) => (
+            <label key={gender} style={{ marginRight: "15px" }}>
+              <input type="radio" name="gender" value={gender} onChange={getInputValue} checked={emp.gender === gender} /> {gender.charAt(0).toUpperCase() + gender.slice(1)}
+            </label>
+          ))}
+        </div>
+
+        <div style={{ marginBottom: "15px" }}>
+          <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>Hobby</label>
+          {["Cricket", "Swimming", "Travelling", "Coding"].map((hobbyName) => (
+            <label key={hobbyName} style={{ display: "block" }}>
+              <input type="checkbox" name="hobby" value={hobbyName} onChange={getInputValue} checked={hobby.includes(hobbyName)} /> {hobbyName}
+            </label>
+          ))}
+        </div>
+
+        <div style={{ marginBottom: "20px" }}>
+          <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>Select City</label>
+          <select
+            name="city"
+            onChange={getInputValue}
+            value={emp.city || ""}
+            style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid #555", backgroundColor: "#333", color: "#fff" }}
+          >
+            <option value="">--- Select City ---</option>
+            {city.map((v, i) => (
+              <option key={i} value={v}>{v}</option>
+            ))}
+          </select>
+        </div>
+
+        <button
+          type="submit"
+          style={{
+            width: "100%",
+            padding: "12px",
+            borderRadius: "8px",
+            border: "none",
+            backgroundColor: "#007bff",
+            color: "#fff",
+            fontSize: "16px",
+            cursor: "pointer",
+            transition: "background 0.3s ease-in-out"
+          }}
+          onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
+          onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
+        >
+          Submit
+        </button>
       </form>
       <ToastContainer />
     </>
