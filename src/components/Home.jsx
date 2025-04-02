@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Home() {
   const [emp, setEmp] = useState({});
@@ -9,7 +9,7 @@ function Home() {
   const [city] = useState(["Surat", "Baroda", "Ahmedabad", "Mumbai"]);
 
   useEffect(() => {
-    let allRecords = JSON.parse(localStorage.getItem('emp'));
+    let allRecords = JSON.parse(localStorage.getItem("emp"));
     setAllEmp(allRecords || []);
   }, []);
 
@@ -42,7 +42,18 @@ function Home() {
 
   return (
     <>
-      <h1 style={{ textAlign: "center", color: "#fff", fontSize: "32px", marginBottom: "20px", textTransform: "uppercase", letterSpacing: "2px" }}>Employee Form</h1>
+      <h1
+        style={{
+          textAlign: "center",
+          color: "#fff",
+          fontSize: "32px",
+          marginBottom: "20px",
+          textTransform: "uppercase",
+          letterSpacing: "2px",
+        }}
+      >
+        Employee Form
+      </h1>
       <form
         onSubmit={submitForm}
         style={{
@@ -53,16 +64,25 @@ function Home() {
           boxShadow: "0px 5px 15px rgba(255, 255, 255, 0.2)",
           backgroundColor: "#1e1e1e",
           fontFamily: "Arial, sans-serif",
-          color: "#fff"
+          color: "#fff",
         }}
       >
+        {/* Name, Email, Password Fields */}
         {[
           { label: "Enter Name", type: "text", name: "name" },
           { label: "Enter Email", type: "email", name: "email" },
-          { label: "Enter Password", type: "password", name: "password" }
+          { label: "Enter Password", type: "password", name: "password" },
         ].map(({ label, type, name }) => (
           <div key={name} style={{ marginBottom: "15px" }}>
-            <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>{label}</label>
+            <label
+              style={{
+                display: "block",
+                marginBottom: "5px",
+                fontWeight: "bold",
+              }}
+            >
+              {label}
+            </label>
             <input
               type={type}
               name={name}
@@ -70,44 +90,103 @@ function Home() {
               onChange={getInputValue}
               value={emp[name] || ""}
               required
-              style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid #555", backgroundColor: "#333", color: "#fff" }}
+              style={{
+                width: "100%",
+                padding: "10px",
+                borderRadius: "8px",
+                border: "1px solid #555",
+                backgroundColor: "#333",
+                color: "#fff",
+              }}
             />
           </div>
         ))}
 
+        {/* Gender Field */}
         <div style={{ marginBottom: "15px" }}>
-          <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>Gender</label>
-          {['male', 'female'].map((gender) => (
+          <label
+            style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}
+          >
+            Gender
+          </label>
+          {["male", "female"].map((gender) => (
             <label key={gender} style={{ marginRight: "15px" }}>
-              <input type="radio" name="gender" value={gender} onChange={getInputValue} checked={emp.gender === gender} /> {gender.charAt(0).toUpperCase() + gender.slice(1)}
+              <input
+                type="radio"
+                name="gender"
+                value={gender}
+                onChange={getInputValue}
+                checked={emp.gender === gender}
+              />{" "}
+              {gender.charAt(0).toUpperCase() + gender.slice(1)}
             </label>
           ))}
         </div>
 
+        {/* Hobby Field (Now in Horizontal Form) */}
         <div style={{ marginBottom: "15px" }}>
-          <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>Hobby</label>
-          {["Cricket", "Swimming", "Travelling", "Coding"].map((hobbyName) => (
-            <label key={hobbyName} style={{ display: "block" }}>
-              <input type="checkbox" name="hobby" value={hobbyName} onChange={getInputValue} checked={hobby.includes(hobbyName)} /> {hobbyName}
-            </label>
-          ))}
+          <label
+            style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}
+          >
+            Hobby
+          </label>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+            {["Cricket", "Swimming", "Travelling", "Coding"].map((hobbyName) => (
+              <label
+                key={hobbyName}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  backgroundColor: "#333",
+                  padding: "8px 12px",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                }}
+              >
+                <input
+                  type="checkbox"
+                  name="hobby"
+                  value={hobbyName}
+                  onChange={getInputValue}
+                  checked={hobby.includes(hobbyName)}
+                  style={{ marginRight: "8px" }}
+                />{" "}
+                {hobbyName}
+              </label>
+            ))}
+          </div>
         </div>
 
+        {/* City Dropdown */}
         <div style={{ marginBottom: "20px" }}>
-          <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>Select City</label>
+          <label
+            style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}
+          >
+            Select City
+          </label>
           <select
             name="city"
             onChange={getInputValue}
             value={emp.city || ""}
-            style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid #555", backgroundColor: "#333", color: "#fff" }}
+            style={{
+              width: "100%",
+              padding: "10px",
+              borderRadius: "8px",
+              border: "1px solid #555",
+              backgroundColor: "#333",
+              color: "#fff",
+            }}
           >
             <option value="">--- Select City ---</option>
             {city.map((v, i) => (
-              <option key={i} value={v}>{v}</option>
+              <option key={i} value={v}>
+                {v}
+              </option>
             ))}
           </select>
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           style={{
@@ -119,7 +198,7 @@ function Home() {
             color: "#fff",
             fontSize: "16px",
             cursor: "pointer",
-            transition: "background 0.3s ease-in-out"
+            transition: "background 0.3s ease-in-out",
           }}
           onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
           onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
